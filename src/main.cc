@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
 #include <string>
 
@@ -8,20 +7,29 @@
 
 using namespace std;
 
-int main() {
-	string filename("matrix.csv");
+int main(int argc, char** argv) {
+	string filename(argv[1]);
 	vector<string> vertex;
-	vector<vector<double>> matrix;
+	vector<vector<string>> matrix;
 	csv_tokenizer(vertex, matrix, filename);
 
 	Graph g;
-	g.setVertex(vertex);
-	g.setMatrix(matrix);
-	
-	for_each(matrix.begin(), matrix.end(), [](const vector<double>& matrix) {
-		copy(matrix.begin(), matrix.end(), ostream_iterator<double>(cout));
-		cout << endl;
-	});
-	
+	g.setGraph(vertex, matrix);
+
+    if (!g.checkVertex()) {
+        return 1;
+    }
+
+	string start, stop;
+	cout << "Begin: ";
+	getline(cin, start);
+	cout << "End: ";
+	getline(cin, stop);
+	g.shorTestPath(start, stop);
+
+	for (const string vertex : g.getPath()) {
+		cout << vertex << endl;
+	}
+
     return 0;
 }
