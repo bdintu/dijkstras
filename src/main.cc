@@ -24,10 +24,10 @@ int main(int argc, char** argv) {
     
     g.shorTestPath(begin, end);
 
-    cout << "shorTestPath:" << endl
+    cout << endl << "shorTestPath:" << endl
         << "\tS = (a";
 	for (const string vertex : g.getPath())
-		cout << "," << vertex;
+		cout << ", " << vertex;
     cout << ")" << endl;
     cout << "\tL(" << end << ") = "  << g.getWeight(end) << endl;
 
