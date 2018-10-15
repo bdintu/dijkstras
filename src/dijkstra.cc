@@ -44,23 +44,34 @@ public:
         auto comparator = [&](const string& left,const string& right) {
             return weight[left] > weight[right]; };
 
+        cout << "set weight " << begin << " to 0 and other to inf." << endl << endl;
         for (auto& vertex : adj_list) {
             weight[vertex.first] = (vertex.first == begin) ? 0 : numeric_limits<unsigned>::max();
             unvisit.push_back(vertex.first);
             push_heap(unvisit.begin(), unvisit.end(), comparator);
         }
-        cout << "Set all weight vertex to infinity but begin vertex" << endl;
         
         while (!unvisit.empty()) {
+
+            cout << "unvisit: { ";
+            for(const auto& vertex : unvisit) {
+                cout << vertex << ":";
+                if (weight[vertex] == numeric_limits<unsigned>::max())
+                    cout << "inf, ";
+                else 
+                    cout << weight[vertex] << ", ";
+            }
+            cout << "}" << endl;
+
             pop_heap(unvisit.begin(), unvisit.end(), comparator);
             string smallest = unvisit.back();
             unvisit.pop_back();
-			cout << "select " << smallest << endl;
 
+			cout << "find minimum weight of vertex in set unvisit, select " << smallest << ":" << endl;
             if (smallest == end) {
-                cout << "\tfound vertex: " << end << endl;
+                cout << "\tfound vertex: " << endl << endl;
                 while (previous.find(smallest) != previous.end()) {
-                    path.push_back(smallest);
+                    path.insert(path.begin(), smallest);
                     smallest = previous[smallest];
                 }
 
@@ -74,14 +85,22 @@ public:
             
             for (auto& neighbor : adj_list[smallest]) {
                 int alt = weight[smallest] + neighbor.second;
-				cout << "\tform " << smallest << " to " << neighbor.first << ", weight: " << alt <<endl;
+				cout << "\tform " << smallest << " to " << neighbor.first 
+                    << ", weight: " << weight[smallest] << " + " <<  neighbor.second
+                    << " = " << alt << endl;
                 if (alt < weight[neighbor.first]) {
                     weight[neighbor.first] = alt;
                     previous[neighbor.first] = smallest;
                     make_heap(unvisit.begin(), unvisit.end(), comparator);
                 }
             }
+
+            cout << "\tremove vertex " << smallest << " from set unvisit" << endl << endl;
         }
+    }
+
+    double getWeight(string& vertex) {
+        return weight[vertex];
     }
 
     vector<string>& getPath() {

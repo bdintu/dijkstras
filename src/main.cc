@@ -8,28 +8,28 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-	string filename(argv[1]);
+	string file(argv[1]);
+    string begin(argv[2]);
+    string end(argv[3]);
+
 	vector<string> vertex;
 	vector<vector<string>> matrix;
-	csv_tokenizer(vertex, matrix, filename);
+	csv_tokenizer(vertex, matrix, file);
 
 	Graph g;
 	g.setGraph(vertex, matrix);
 
-    if (!g.checkVertex()) {
+    if (!g.checkVertex())
         return 1;
-    }
+    
+    g.shorTestPath(begin, end);
 
-	string start, stop;
-	cout << "Begin: ";
-	getline(cin, start);
-	cout << "End: ";
-	getline(cin, stop);
-	g.shorTestPath(start, stop);
-
-	for (const string vertex : g.getPath()) {
-		cout << vertex << endl;
-	}
+    cout << "shorTestPath:" << endl
+        << "\tS = (a";
+	for (const string vertex : g.getPath())
+		cout << "," << vertex;
+    cout << ")" << endl;
+    cout << "\tL(" << end << ") = "  << g.getWeight(end) << endl;
 
     return 0;
 }
