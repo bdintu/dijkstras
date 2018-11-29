@@ -1,0 +1,35 @@
+dict<string, map<string, int>> adjList
+dict<string, int> weight
+dict<string, string> prev
+stack<string> unvisit
+list<string> path
+
+add adj matrix to adjList
+set begin and end vertex
+
+dijkstra (adjList, begin , end)
+    for vertex : adjList
+        If vertex == begin
+            weight[vertex] = 0
+        else
+            weight[vertex] = INFIN.
+
+unvisit.push(vertex)
+pushHeap(unvisit)
+
+while unvisit is not empty
+    popHeap(unvisit)
+smallest = unvisit.pop()
+
+If smallest == end
+    while have prev[smallest]
+        path.pushFront(usmallest)
+        smallest = prev[smallest]
+
+for neighbor : adjList[smallest]
+    if neighbor in unvisit
+    alt = weight[smallest] + weight of neighbor
+    If alt < weight[neighbor]
+        weight[neighbor] = alt
+        prev[neighbor] = smallest
+        makeHeap(unvisit)
