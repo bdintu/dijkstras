@@ -44,7 +44,8 @@ public:
         auto comparator = [&](const string& left,const string& right) {
             return weight[left] > weight[right]; };
 
-        cout << "set weight " << begin << " to 0 and other to inf." << endl << endl;
+        cout << "set weight " << begin << " to 0 and other to inf." << endl
+            << "add all node to unvisit." << endl << endl;
         for (auto& vertex : adj_list) {
             weight[vertex.first] = (vertex.first == begin) ? 0 : numeric_limits<unsigned>::max();
             unvisit.push_back(vertex.first);
@@ -97,18 +98,20 @@ public:
 
             cout << "\tfind neighbor: " << endl;
             for (const auto& neighbor : adj_list[smallest]) {
-                int alt = weight[smallest] + neighbor.second;
-				cout << "\t\tform " << smallest << " to " << neighbor.first 
-                    << ": " << weight[smallest] << " + " <<  neighbor.second
-                    << " = " << alt << endl;
+				if (find(unvisit.begin(), unvisit.end(), neighbor.first) != unvisit.end()) {
+					int alt = weight[smallest] + neighbor.second;
+					cout << "\t\tform " << smallest << " to " << neighbor.first 
+						<< ": " << weight[smallest] << " + " <<  neighbor.second
+						<< " = " << alt << endl;
 
-                if (alt < weight[neighbor.first]) {
-                    cout << "\t\t\tset weight[" << neighbor.first << "]: " << alt
-                        << ", prev[" << neighbor.first << "]: " << smallest << endl;
-                    weight[neighbor.first] = alt;
-                    previous[neighbor.first] = smallest;
-                    make_heap(unvisit.begin(), unvisit.end(), comparator);
-                }
+					if (alt < weight[neighbor.first]) {
+						cout << "\t\t\tset weight[" << neighbor.first << "]: " << alt
+							<< ", prev[" << neighbor.first << "]: " << smallest << endl;
+						weight[neighbor.first] = alt;
+						previous[neighbor.first] = smallest;
+						make_heap(unvisit.begin(), unvisit.end(), comparator);
+					}
+				}
             }
         }
     }
